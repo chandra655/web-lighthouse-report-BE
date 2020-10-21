@@ -6,3 +6,6 @@ export const insightsRouter = express.Router();
 insightsRouter.route("/").get(insightsController.findAll);
 
 insightsRouter.route("/:routeId").get(insightsController.findAllByRoute);
+insightsRouter
+  .route("/:routeId/weekly")
+  .get(insightsController.findAllByRouteAndWeek);

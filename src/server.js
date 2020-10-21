@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 app.use(express.json());
 app.use(cors());
+
 const piDB = firebase.firestore().collection("performance-results");
 
 cron.schedule(
@@ -31,7 +32,6 @@ cron.schedule(
               date: getDate(),
               routeId: crypto.createHash("sha1").update(url).digest("hex"),
             });
-            console.log(di);
           }
         });
       }, 60 * 1000);
