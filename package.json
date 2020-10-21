@@ -18,13 +18,13 @@
     "express": "^4.17.1",
     "firebase": "^7.24.0",
     "isomorphic-fetch": "^3.0.0",
-    "node-cron": "^2.0.3"
-  },
-  "devDependencies": {
+    "node-cron": "^2.0.3",
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
     "@babel/node": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-env": "^7.12.1"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.6"
   }
 }
