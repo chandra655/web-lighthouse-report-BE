@@ -21,7 +21,7 @@ app.use(cors());
 const piDB = firebase.firestore().collection("performance-results");
 
 cron.schedule(
-  "0 0 */12 * * *",
+  "0 */6 * * *",
   () => {
     urls.forEach((url) => {
       setTimeout(() => {
@@ -36,6 +36,7 @@ cron.schedule(
         });
       }, 60 * 1000);
     });
+    console.log("object");
   },
   {
     scheduled: true,

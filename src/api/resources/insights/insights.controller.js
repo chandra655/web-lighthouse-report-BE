@@ -17,11 +17,15 @@ class InsightsController {
     if (snapshot.empty) {
       res.json({ results: [] });
     }
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    res.status(200).json(data);
+    const result = [];
+    snapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      const docDate = new Date(data.date).getTime();
+      if (docDate > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).getTime()) {
+        result.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    res.status(200).json(result);
   }
   static async findAllByRouteAndWeek(req, res) {
     const { routeId } = req.params;
