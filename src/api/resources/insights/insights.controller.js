@@ -50,14 +50,40 @@ class InsightsController {
         _acc.accessibility += _result.accessibility;
         _acc.seo += _result.seo;
         _acc.pwa += _result.pwa;
+        _acc.fcp += parseInt(_result["first-contentful-paint"].slice(0, 1), 10);
+        _acc.fmp += parseInt(_result["first-meaning-fulpaint"].slice(0, 1), 10);
+        _acc.cls += parseInt(
+          _result["cumulative-layout-shift"].slice(0, 1),
+          10
+        );
+        _acc.si += parseInt(_result["speed-index"].slice(0, 1), 10);
+        _acc.lcp += parseInt(
+          _result["largest-contentful-paint"].slice(0, 1),
+          10
+        );
+        _acc.ti += parseInt(_result["time-to-interactive"].slice(0, 1), 10);
+        _acc.tbt += parseInt(_result["total-blocking-time"].slice(0, 1), 10);
         _acc["best-practices"] += _result["best-practices"];
         return _acc;
       },
-      { performance: 0, accessibility: 0, seo: 0, pwa: 0, "best-practices": 0 }
+      {
+        performance: 0,
+        accessibility: 0,
+        seo: 0,
+        pwa: 0,
+        "best-practices": 0,
+        fcp: 0,
+        fmp: 0,
+        cls: 0,
+        si: 0,
+        lcp: 0,
+        ti: 0,
+        tbt: 0,
+      }
     );
     Object.keys(calculatedResult).forEach((_key) => {
-      calculatedResult[_key] = Math.round(
-        calculatedResult[_key] / result.length
+      calculatedResult[_key] = (calculatedResult[_key] / result.length).toFixed(
+        1
       );
     });
     res.status(200).json(calculatedResult);
