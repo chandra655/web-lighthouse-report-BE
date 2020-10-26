@@ -6,6 +6,7 @@ import express from "express";
 import cron from "node-cron";
 import cors from "cors";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 import { getInsight } from "./utils/getSpeedInsights";
 import { urls } from "./constants/urls";
@@ -20,29 +21,47 @@ app.use(cors());
 
 const piDB = firebase.firestore().collection("performance-results");
 
-cron.schedule(
-  "0 */6 * * *",
-  () => {
-    urls.forEach((url) => {
-      setTimeout(() => {
-        getInsight(url).then(async (data) => {
-          if (data) {
-            const di = await piDB.add({
-              ...data,
-              date: getDate(),
-              routeId: crypto.createHash("sha1").update(url).digest("hex"),
-            });
-          }
-        });
-      }, 60 * 1000);
-    });
-    console.log("object");
-  },
-  {
-    scheduled: true,
-    timezone: "Asia/Kolkata",
-  }
-);
+cron.schedule("0 0 */6 * * *", () => {
+  const messageOptions = {
+    from: "chandrapenugonda655@gmail.com",
+    to: "chandra.penugonda@unacademy.com",
+    subject: "Scheduled Email",
+    text: `Hi there. This email was automatically sent by us. ${new Date()}`,
+  };
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    secure: false,
+    auth: {
+      user: process.env.email,
+      pass: process.env.password,
+    },
+  });
+
+  transporter.sendMail(messageOptions, function (error, info) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Email successfully sent!");
+    }
+  });
+  urls.forEach((url) => {
+    setTimeout(() => {
+      getInsight(url).then(async (data) => {
+        if (data) {
+          const output = await piDB.add({
+            ...data,
+            date: getDate(),
+            routeId: crypto.createHash("sha1").update(url).digest("hex"),
+          });
+        } else {
+          console.log("error");
+        }
+      });
+    }, 60 * 1000);
+  });
+});
 
 app.use("/api", apiRouter);
 
