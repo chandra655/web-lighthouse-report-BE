@@ -22,7 +22,7 @@ app.use(cors());
 
 const piDB = firebase.firestore().collection("performance-results");
 
-schedule.scheduleJob("0 */1 * * * *", function () {
+schedule.scheduleJob("0 0 */6 * * *", function () {
   const messageOptions = {
     from: "chandrapenugonda655@gmail.com",
     to: "chandra.penugonda@unacademy.com",
@@ -47,21 +47,21 @@ schedule.scheduleJob("0 */1 * * * *", function () {
       console.log("Email successfully sent!");
     }
   });
-  // urls.forEach((url) => {
-  //   setTimeout(() => {
-  //     getInsight(url).then(async (data) => {
-  //       if (data) {
-  //         await piDB.add({
-  //           ...data,
-  //           date: getDate(),
-  //           routeId: crypto.createHash("sha1").update(url).digest("hex"),
-  //         });
-  //       } else {
-  //         console.log("error");
-  //       }
-  //     });
-  //   }, 60 * 1000);
-  // });
+  urls.forEach((url) => {
+    setTimeout(() => {
+      getInsight(url).then(async (data) => {
+        if (data) {
+          await piDB.add({
+            ...data,
+            date: getDate(),
+            routeId: crypto.createHash("sha1").update(url).digest("hex"),
+          });
+        } else {
+          console.log("error");
+        }
+      });
+    }, 60 * 1000);
+  });
 });
 
 // cron.schedule("0 */6 * * *", () => {
