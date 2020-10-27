@@ -22,7 +22,7 @@ app.use(cors());
 
 const piDB = firebase.firestore().collection("performance-results");
 
-schedule.scheduleJob("0 * */6 * * *", function () {
+schedule.scheduleJob("0 0 */6 * * *", function () {
   const messageOptions = {
     from: "chandrapenugonda655@gmail.com",
     to: "chandra.penugonda@unacademy.com",
