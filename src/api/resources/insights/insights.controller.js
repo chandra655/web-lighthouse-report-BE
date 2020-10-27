@@ -83,7 +83,7 @@ class InsightsController {
     );
     Object.keys(calculatedResult).forEach((_key) => {
       calculatedResult[_key] = (calculatedResult[_key] / result.length).toFixed(
-        1
+        3
       );
     });
     res.status(200).json(calculatedResult);
