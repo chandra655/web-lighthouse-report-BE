@@ -22,44 +22,44 @@ app.use(cors());
 
 const piDB = firebase.firestore().collection("performance-results");
 
-schedule.scheduleJob("0 0 */6 * * *", function () {
-  // const messageOptions = {
-  //   from: "chandrapenugonda655@gmail.com",
-  //   to: "chandra.penugonda@unacademy.com",
-  //   subject: "Scheduled Email",
-  //   text: `Hi there. This email was automatically sent by us. ${new Date()}`,
-  // };
-  // const transporter = nodemailer.createTransport({
-  //   service: "gmail",
-  //   host: "smtp.gmail.com",
-  //   secure: false,
-  //   auth: {
-  //     user: process.env.email,
-  //     pass: process.env.password,
-  //   },
-  // });
-  // transporter.sendMail(messageOptions, function (error, info) {
-  //   if (error) {
-  //     throw error;
-  //   } else {
-  //     console.log("Email successfully sent!");
-  //   }
-  // });
-  // urls.forEach((url) => {
-  //   setTimeout(() => {
-  //     getInsight(url).then(async (data) => {
-  //       if (data) {
-  //         await piDB.add({
-  //           ...data,
-  //           date: getDate(),
-  //           routeId: crypto.createHash("sha1").update(url).digest("hex"),
-  //         });
-  //       } else {
-  //         console.log("error");
-  //       }
-  //     });
-  //   }, 60 * 1000);
-  // });
+schedule.scheduleJob("0 */1 * * * *", function () {
+  const messageOptions = {
+    from: "chandrapenugonda655@gmail.com",
+    to: "chandra.penugonda@unacademy.com",
+    subject: "Scheduled Email",
+    text: `Hi there. This email was automatically sent by us. ${new Date()}`,
+  };
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    secure: false,
+    auth: {
+      user: process.env.email,
+      pass: process.env.password,
+    },
+  });
+  transporter.sendMail(messageOptions, function (error, info) {
+    if (error) {
+      throw error;
+    } else {
+      console.log("Email successfully sent!");
+    }
+  });
+  urls.forEach((url) => {
+    setTimeout(() => {
+      getInsight(url).then(async (data) => {
+        if (data) {
+          await piDB.add({
+            ...data,
+            date: getDate(),
+            routeId: crypto.createHash("sha1").update(url).digest("hex"),
+          });
+        } else {
+          console.log("error");
+        }
+      });
+    }, 60 * 1000);
+  });
 });
 
 // cron.schedule("0 */6 * * *", () => {
