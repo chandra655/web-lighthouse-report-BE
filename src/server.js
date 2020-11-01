@@ -22,7 +22,25 @@ app.use(cors());
 
 const piDB = firebase.firestore().collection("performance-results");
 
-schedule.scheduleJob("0 0 */6 * * *", function () {
+// query to delete records in date range
+// piDB.get().then((snapshot) => {
+//   snapshot.docs.forEach((doc) => {
+//     const data = doc.data();
+//     if (
+//       data.date > "2020-10-27 03:36:20" &&
+//       data.date < "2020-10-27 09:00:20"
+//     ) {
+//       // console.log(data.date);
+//       doc.ref.delete();
+//     }
+//   });
+// });
+
+const rule = new schedule.RecurrenceRule();
+rule.hour = 6;
+rule.minute = 0;
+
+schedule.scheduleJob(rule, function () {
   const messageOptions = {
     from: "chandrapenugonda655@gmail.com",
     to: "chandra.penugonda@unacademy.com",
