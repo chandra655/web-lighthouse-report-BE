@@ -36,11 +36,7 @@ const piDB = firebase.firestore().collection("performance-results");
 //   });
 // });
 
-const rule = new schedule.RecurrenceRule();
-rule.hour = 6;
-rule.minute = 0;
-
-schedule.scheduleJob(rule, function () {
+schedule.scheduleJob("0 0 */6 * * *", function () {
   const messageOptions = {
     from: "chandrapenugonda655@gmail.com",
     to: "chandra.penugonda@unacademy.com",
